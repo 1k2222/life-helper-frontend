@@ -7,6 +7,7 @@ import {Button, Grid} from "@mui/material";
 import EnglishPlayer from "./components/EnglishPlayer.jsx";
 import RadioIcon from "@mui/icons-material/Radio";
 import {useNavigate} from "react-router";
+import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 
 function App() {
     const navigate = useNavigate();
@@ -18,6 +19,14 @@ function App() {
                 }}>
                     <RadioIcon/>
                     <p>英语学习</p>
+                </Button>
+            </Grid>
+            <Grid size={4}>
+                <Button onClick={() => {
+                    navigate('/cantonese_pronouncer')
+                }}>
+                    <RecordVoiceOverIcon/>
+                    <p>粤语朗读</p>
                 </Button>
             </Grid>
         </Grid>

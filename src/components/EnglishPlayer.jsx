@@ -1,5 +1,6 @@
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 import {axiosInstance} from "../utils/network.jsx";
 import {useEffect, useState} from "react";
 import {Alert, Box, Button, Container, Grid, Snackbar} from "@mui/material";
@@ -13,14 +14,45 @@ export default function EnglishPlayer() {
             setStatus(response)
         })
     }, []);
-    const clickHandler = () => {
-        const url = status.is_playing ? "/api/english_player/stop" : "/api/english_player/start"
-        axiosInstance.post(url).then(() => {
-            location.reload()
-        })
-    }
     if (!status) {
         return <></>
+    }
+    const showButton = () => {
+        if (status.is_playing) {
+            return (
+                <Container>
+                    <Button onClick={() => {
+                        axiosInstance.post("/api/english_player/stop").then(() => {
+                            location.reload()
+                        })
+                    }}>
+                        <StopIcon/>
+                        <p>停止播放英语</p>
+                    </Button>
+                </Container>
+            )
+        } else {
+            return (
+                <Container>
+                    <Button onClick={() => {
+                        axiosInstance.post("/api/english_player/start_newest").then(() => {
+                            location.reload()
+                        })
+                    }}>
+                        <PlayArrowIcon/>
+                        <p>循环播放最新课程</p>
+                    </Button>
+                    <Button onClick={() => {
+                        axiosInstance.post("/api/english_player/start").then(() => {
+                            location.reload()
+                        })
+                    }}>
+                        <ReviewsIcon/>
+                        <p>复习旧课程</p>
+                    </Button>
+                </Container>
+            )
+        }
     }
     const showAlert = (severity, message) => {
         setAlertConfig({
@@ -38,12 +70,7 @@ export default function EnglishPlayer() {
     }
     return (
         <Box>
-            <Container>
-                <Button onClick={clickHandler}>
-                    {status.is_playing ? <StopIcon/> : <PlayArrowIcon/>}
-                    <p>{status.is_playing ? "停止播放英语" : "播放英语"}</p>
-                </Button>
-            </Container>
+            {showButton()}
             <Container>
                 学习进度: {<input type="number"
                                   disabled={status.is_playing}
