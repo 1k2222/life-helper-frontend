@@ -15,7 +15,6 @@ export default function CantonesePronouncer() {
         }).then((resp) => {
             setStatus(0)
             setAudioContent(resp.data)
-            console.log(resp.data)
         }).catch((error) => {
             setStatus(2)
             console.log("Pronounce Cantonese Failed, error: ", error)
