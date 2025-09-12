@@ -6,7 +6,6 @@ export default function CantonesePronouncer() {
     const [status, setStatus] = useState(0)
     const [text, setText] = useState("")
     const [audioContent, setAudioContent] = useState(null)
-    const [buttonEnabled, setButtonEnabled] = useState(false)
     const generate = () => {
         setStatus(1)
         axios.post('/api/pronounce_cantonese', {
@@ -59,13 +58,12 @@ export default function CantonesePronouncer() {
             <Grid size={12}>
                 <TextField fullWidth placeholder="请输入要朗读的内容..." multiline variant="filled"
                            onChange={(e) => {
-                               setButtonEnabled(e.target.value.trim().length > 0)
                                setText(e.target.value)
                            }}
                            sx={{backgroundColor: "white"}}/>
             </Grid>
             <Grid size={12}>
-                <Button onClick={generate} disabled={!buttonEnabled} variant="contained"
+                <Button onClick={generate} disabled={text.trim().length === 0 || status === 1} variant="contained"
                         sx={{alignItems: "center"}}>点击生成语音</Button>
             </Grid>
             {showProgressBar()}
