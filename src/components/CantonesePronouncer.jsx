@@ -1,5 +1,5 @@
 import {Box, Button, CircularProgress, Grid, TextField} from "@mui/material";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 export default function CantonesePronouncer() {
@@ -7,6 +7,11 @@ export default function CantonesePronouncer() {
     const [text, setText] = useState("")
     const [audioContent, setAudioContent] = useState(null)
     const audioRef = useRef()
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.load();
+        }
+    }, [audioContent])
     const generate = () => {
         setStatus(1)
         axios.post('/api/pronounce_cantonese', {
@@ -16,9 +21,6 @@ export default function CantonesePronouncer() {
         }).then((resp) => {
             setStatus(0)
             setAudioContent(resp.data)
-            if (audioRef.current) {
-                audioRef.current.load();
-            }
         }).catch((error) => {
             setStatus(2)
             console.log("Pronounce Cantonese Failed, error: ", error)
